@@ -1,0 +1,11 @@
+{
+    "examples": [
+        "batch_corruption",
+        "compound_failure",
+        "compound_unresolved",
+        "out_of_order_supplier",
+        "partial_allocation",
+        "quantity_dispute",
+        "simple_condition_conflict"
+    ]
+}
