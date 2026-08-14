@@ -1,0 +1,472 @@
+{
+    "id": "a390e925-b7cb-427a-8afd-ee9245146d1f",
+    "return_id": "RET-2026-001",
+    "scenario_name": "compound_failure",
+    "summary_status": "RESOLVED",
+    "item_count": 1,
+    "conflict_count": 3,
+    "quantity_received": 24,
+    "route_totals": {
+        "SCRAP": 6,
+        "RESTOCK": 18
+    },
+    "created_at": "2026-08-14T11:17:42.240130+00:00",
+    "input_payload": {
+        "return_id": "RET-2026-001",
+        "warehouse_report": {
+            "items": [
+                {
+                    "item_id": "MILK-01-1",
+                    "sku": "MILK-01",
+                    "quantity_received": 24,
+                    "condition": "DAMAGED_UNSAFE",
+                    "damage_type": "punctured cartons, leaking",
+                    "damaged_quantity": 6,
+                    "batch_code": "BA?9O2",
+                    "best_before": "2026-10-18",
+                    "inspection_timestamp": "2026-08-13T09:15:00Z"
+                }
+            ]
+        },
+        "supplier_events": [
+            {
+                "event_id": "evt-1",
+                "item_id": "MILK-01-1",
+                "sku": "MILK-01",
+                "batch_code": "BA1902",
+                "acknowledged_quantity": 24,
+                "credit_eligible": true,
+                "credit_quantity": 8,
+                "instruction": "SCRAP",
+                "event_timestamp": "2026-08-13T13:55:00Z",
+                "received_at": "2026-08-13T14:05:00Z"
+            },
+            {
+                "event_id": "evt-2",
+                "item_id": "MILK-01-1",
+                "sku": "MILK-01",
+                "batch_code": "BA1902",
+                "acknowledged_quantity": 24,
+                "credit_eligible": true,
+                "credit_quantity": 4,
+                "instruction": "RESTOCK",
+                "event_timestamp": "2026-08-13T14:02:00Z",
+                "received_at": "2026-08-13T13:55:00Z"
+            }
+        ],
+        "product_metadata": [
+            {
+                "sku": "MILK-01",
+                "known_batches": [
+                    {
+                        "batch_code": "BA1902",
+                        "best_before": "2026-10-18"
+                    }
+                ]
+            }
+        ]
+    },
+    "audit_report": {
+        "return_id": "RET-2026-001",
+        "items": [
+            {
+                "item_id": "MILK-01-1",
+                "sku": "MILK-01",
+                "resolved": {
+                    "condition": "DAMAGED_UNSAFE",
+                    "batch_code": "BA1902",
+                    "best_before_bucket": "2026-10"
+                },
+                "conflicts": [
+                    {
+                        "conflict_id": "MILK-01-1:condition_disagreement",
+                        "type": "CONDITION_DISAGREEMENT",
+                        "item_id": "MILK-01-1",
+                        "description": "warehouse reports condition DAMAGED_UNSAFE but supplier event evt-2 instructs RESTOCK",
+                        "claim_ids": [
+                            "MILK-01-1:warehouse:condition",
+                            "MILK-01-1:supplier:evt-2:instruction"
+                        ]
+                    },
+                    {
+                        "conflict_id": "MILK-01-1:batch_mismatch",
+                        "type": "BATCH_MISMATCH",
+                        "item_id": "MILK-01-1",
+                        "description": "warehouse batch 'BA?9O2' does not match supplier batch 'BA1902'",
+                        "claim_ids": [
+                            "MILK-01-1:warehouse:batch_code",
+                            "MILK-01-1:supplier:evt-2:batch_code"
+                        ]
+                    },
+                    {
+                        "conflict_id": "MILK-01-1:credit_quantity_dispute",
+                        "type": "QUANTITY_OR_ELIGIBILITY_DISPUTE",
+                        "item_id": "MILK-01-1",
+                        "description": "warehouse recorded 6 damaged units, supplier credits 4",
+                        "claim_ids": [
+                            "MILK-01-1:warehouse:quantity_received",
+                            "MILK-01-1:supplier:evt-2:credit_quantity"
+                        ]
+                    }
+                ],
+                "evidence": [
+                    {
+                        "claim_id": "MILK-01-1:warehouse:condition",
+                        "item_id": "MILK-01-1",
+                        "field": "condition",
+                        "value": "DAMAGED_UNSAFE",
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse direct physical inspection",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-13T09:15:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:warehouse:damage_type",
+                        "item_id": "MILK-01-1",
+                        "field": "damage_type",
+                        "value": "punctured cartons, leaking",
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse direct physical inspection",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-13T09:15:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:warehouse:quantity_received",
+                        "item_id": "MILK-01-1",
+                        "field": "quantity_received",
+                        "value": 24,
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse physical count on receipt",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-13T09:15:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:warehouse:best_before",
+                        "item_id": "MILK-01-1",
+                        "field": "best_before",
+                        "value": "2026-10-18",
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse label reading",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-13T09:15:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:warehouse:batch_code",
+                        "item_id": "MILK-01-1",
+                        "field": "batch_code",
+                        "value": "BA?9O2",
+                        "source": "WAREHOUSE",
+                        "status": "CORRUPTED",
+                        "authority": "UNRESOLVED",
+                        "reason": "contains non-alphanumeric characters, not recoverable by substitution",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-13T09:15:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-2:batch_code",
+                        "item_id": "MILK-01-1",
+                        "field": "batch_code",
+                        "value": "BA1902",
+                        "source": "SUPPLIER",
+                        "status": "CORROBORATED",
+                        "authority": "DIRECT",
+                        "reason": "matches known batch metadata for SKU MILK-01",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-13T14:02:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-2:acknowledged_quantity",
+                        "item_id": "MILK-01-1",
+                        "field": "acknowledged_quantity",
+                        "value": 24,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-13T14:02:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-2:credit_eligible",
+                        "item_id": "MILK-01-1",
+                        "field": "credit_eligible",
+                        "value": true,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-13T14:02:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-2:credit_quantity",
+                        "item_id": "MILK-01-1",
+                        "field": "credit_quantity",
+                        "value": 4,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-13T14:02:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-2:instruction",
+                        "item_id": "MILK-01-1",
+                        "field": "instruction",
+                        "value": "RESTOCK",
+                        "source": "SUPPLIER",
+                        "status": "REJECTED",
+                        "authority": "DIRECT",
+                        "reason": "overridden by physical safety override (R005): warehouse confirmed unsafe damage",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-13T14:02:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-1:batch_code",
+                        "item_id": "MILK-01-1",
+                        "field": "batch_code",
+                        "value": "BA1902",
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-13T13:55:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-1:acknowledged_quantity",
+                        "item_id": "MILK-01-1",
+                        "field": "acknowledged_quantity",
+                        "value": 24,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-13T13:55:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-1:credit_eligible",
+                        "item_id": "MILK-01-1",
+                        "field": "credit_eligible",
+                        "value": true,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-13T13:55:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-1:credit_quantity",
+                        "item_id": "MILK-01-1",
+                        "field": "credit_quantity",
+                        "value": 8,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-13T13:55:00Z"
+                    },
+                    {
+                        "claim_id": "MILK-01-1:supplier:evt-1:instruction",
+                        "item_id": "MILK-01-1",
+                        "field": "instruction",
+                        "value": "SCRAP",
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-13T13:55:00Z"
+                    }
+                ],
+                "resolved_fields": [
+                    {
+                        "field": "condition",
+                        "value": "DAMAGED_UNSAFE",
+                        "winning_source": "WAREHOUSE",
+                        "provenance": "DIRECT",
+                        "reason": "warehouse has policy authority for condition",
+                        "rules_applied": [
+                            "R001"
+                        ],
+                        "accepted_claim_ids": [
+                            "MILK-01-1:warehouse:condition"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "quantity_received",
+                        "value": 24,
+                        "winning_source": "WAREHOUSE",
+                        "provenance": "DIRECT",
+                        "reason": "warehouse has policy authority for quantity_received",
+                        "rules_applied": [],
+                        "accepted_claim_ids": [
+                            "MILK-01-1:warehouse:quantity_received"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "batch_code",
+                        "value": "BA1902",
+                        "winning_source": "SUPPLIER",
+                        "provenance": "CORROBORATED",
+                        "reason": "warehouse batch is corrupted, supplier batch independently corroborated by product metadata for SKU MILK-01",
+                        "rules_applied": [
+                            "R002",
+                            "R003"
+                        ],
+                        "accepted_claim_ids": [
+                            "MILK-01-1:supplier:evt-2:batch_code"
+                        ],
+                        "rejected_claim_ids": [
+                            "MILK-01-1:warehouse:batch_code"
+                        ]
+                    },
+                    {
+                        "field": "best_before",
+                        "value": "2026-10-18",
+                        "winning_source": "DERIVED",
+                        "provenance": "CORROBORATED",
+                        "reason": "taken from product metadata for the corroborated batch",
+                        "rules_applied": [
+                            "R003"
+                        ],
+                        "accepted_claim_ids": [],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "credit_eligible",
+                        "value": true,
+                        "winning_source": "SUPPLIER",
+                        "provenance": "DIRECT",
+                        "reason": "supplier has policy authority for credit_eligible",
+                        "rules_applied": [
+                            "R008"
+                        ],
+                        "accepted_claim_ids": [
+                            "MILK-01-1:supplier:evt-2:credit_eligible"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "credit_quantity",
+                        "value": 4,
+                        "winning_source": "SUPPLIER",
+                        "provenance": "DIRECT",
+                        "reason": "supplier has policy authority for credit_quantity",
+                        "rules_applied": [
+                            "R008"
+                        ],
+                        "accepted_claim_ids": [
+                            "MILK-01-1:supplier:evt-2:credit_quantity"
+                        ],
+                        "rejected_claim_ids": []
+                    }
+                ],
+                "rules_applied": [
+                    "R001",
+                    "R002",
+                    "R003",
+                    "R004",
+                    "R005",
+                    "R006",
+                    "R008"
+                ],
+                "allocations": [
+                    {
+                        "quantity": 6,
+                        "route": "SCRAP",
+                        "reason": "DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction",
+                        "best_before_bucket": null,
+                        "context": "unsafe_damage"
+                    },
+                    {
+                        "quantity": 18,
+                        "route": "RESTOCK",
+                        "reason": "intact stock with resolved batch identity and best-before date",
+                        "best_before_bucket": "2026-10",
+                        "context": "resolved_good"
+                    }
+                ],
+                "commercial_decision": {
+                    "credit_eligible": true,
+                    "credit_quantity": 4,
+                    "reason": "supplier has policy authority for credit_eligible",
+                    "rules_applied": [
+                        "R008"
+                    ]
+                },
+                "invariants": [
+                    {
+                        "name": "R006_QUANTITY_CONSERVATION",
+                        "passed": true,
+                        "detail": "24 received, 24 allocated"
+                    }
+                ],
+                "reasoning": [
+                    "Condition: warehouse reports DAMAGED_UNSAFE (6 of 24 units affected), direct observation (R001).",
+                    "Batch: resolved to 'BA1902' [CORROBORATED]. warehouse batch is corrupted, supplier batch independently corroborated by product metadata for SKU MILK-01.",
+                    "Supplier timeline: current event evt-2 accepted (ordered by event_timestamp (current: 2026-08-13T14:02:00+00:00), received_at ignored for ordering).",
+                    "Supplier instruction: RESTOCK (event evt-2), a routing preference weighed against physical evidence, not followed automatically.",
+                    "Supplier timeline: event evt-1 marked SUPERSEDED.",
+                    "Conflicts detected: CONDITION_DISAGREEMENT, BATCH_MISMATCH, QUANTITY_OR_ELIGIBILITY_DISPUTE.",
+                    "Routing: 6 -> SCRAP (DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction).",
+                    "Routing: 18 -> RESTOCK / 2026-10 (intact stock with resolved batch identity and best-before date).",
+                    "Commercial: credit_eligible=True, credit_quantity=4, kept separate from physical routing (R008)."
+                ],
+                "rejected_alternatives": [
+                    {
+                        "quantity": 6,
+                        "route": "SCRAP",
+                        "reason": "DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction",
+                        "best_before_bucket": null,
+                        "rejected_alternatives": [
+                            {
+                                "route": "RESTOCK",
+                                "reason": "physical damage was confirmed unsafe, restocking it would ship unsafe stock"
+                            },
+                            {
+                                "route": "QUARANTINE",
+                                "reason": "damage is conclusively unsafe, holding it for inspection would not change the outcome"
+                            }
+                        ]
+                    },
+                    {
+                        "quantity": 18,
+                        "route": "RESTOCK",
+                        "reason": "intact stock with resolved batch identity and best-before date",
+                        "best_before_bucket": "2026-10",
+                        "rejected_alternatives": [
+                            {
+                                "route": "SCRAP",
+                                "reason": "no evidence of damage in this portion"
+                            },
+                            {
+                                "route": "QUARANTINE",
+                                "reason": "identity and condition are both sufficiently resolved, no need for manual inspection"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "summary": {
+            "item_count": 1,
+            "conflict_count": 3,
+            "invariants_passed": true
+        }
+    }
+}

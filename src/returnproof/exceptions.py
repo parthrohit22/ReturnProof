@@ -8,13 +8,27 @@ errors, and never reach these classes.
 
 from __future__ import annotations
 
+from typing import Any
+
 
 class ReturnProofError(Exception):
     """Base class for all errors raised by the engine."""
 
 
 class InputValidationError(ReturnProofError):
-    """The input document is malformed or fails schema/domain validation."""
+    """The input document is malformed or fails schema/domain validation.
+
+    `errors` carries pydantic's structured per-field error list (its
+    `.errors()` output) when available, alongside the flattened string
+    message every caller already gets from `str(exc)`. The CLI only needs
+    the string. A caller building a structured HTTP response (see
+    server/reconciliation/api.py) needs the per-field detail too, and
+    shouldn't have to re-parse the string to get it.
+    """
+
+    def __init__(self, message: str, errors: list[dict[str, Any]] | None = None) -> None:
+        super().__init__(message)
+        self.errors = errors or []
 
 
 class InvariantViolationError(ReturnProofError):

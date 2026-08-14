@@ -1,0 +1,422 @@
+{
+    "id": "70f97b5a-b8cc-41cd-a20e-e5c1b96e3722",
+    "return_id": "RET-2026-007",
+    "scenario_name": "compound_unresolved",
+    "summary_status": "REQUIRES_REVIEW",
+    "item_count": 1,
+    "conflict_count": 2,
+    "quantity_received": 15,
+    "route_totals": {
+        "QUARANTINE": 15
+    },
+    "created_at": "2026-08-14T11:17:42.294349+00:00",
+    "input_payload": {
+        "return_id": "RET-2026-007",
+        "warehouse_report": {
+            "items": [
+                {
+                    "item_id": "JUICE-77-1",
+                    "sku": "JUICE-77",
+                    "quantity_received": 15,
+                    "condition": "GOOD",
+                    "damaged_quantity": 0,
+                    "batch_code": "J?7$Z1",
+                    "best_before": "2027-01-01",
+                    "inspection_timestamp": "2026-08-12T09:00:00Z"
+                }
+            ]
+        },
+        "supplier_events": [
+            {
+                "event_id": "evt-1",
+                "item_id": "JUICE-77-1",
+                "sku": "JUICE-77",
+                "batch_code": "JX7701",
+                "acknowledged_quantity": 14,
+                "credit_eligible": false,
+                "credit_quantity": 0,
+                "instruction": "SCRAP",
+                "event_timestamp": "2026-08-12T10:00:00Z",
+                "received_at": "2026-08-12T11:30:00Z"
+            },
+            {
+                "event_id": "evt-2",
+                "item_id": "JUICE-77-1",
+                "sku": "JUICE-77",
+                "batch_code": "JX7701",
+                "acknowledged_quantity": 14,
+                "credit_eligible": false,
+                "credit_quantity": 0,
+                "instruction": "RESTOCK",
+                "event_timestamp": "2026-08-12T10:45:00Z",
+                "received_at": "2026-08-12T10:50:00Z"
+            }
+        ],
+        "product_metadata": [
+            {
+                "sku": "JUICE-77",
+                "known_batches": [
+                    {
+                        "batch_code": "JX9999",
+                        "best_before": "2027-01-01"
+                    }
+                ]
+            }
+        ]
+    },
+    "audit_report": {
+        "return_id": "RET-2026-007",
+        "items": [
+            {
+                "item_id": "JUICE-77-1",
+                "sku": "JUICE-77",
+                "resolved": {
+                    "condition": "GOOD",
+                    "batch_code": null,
+                    "best_before_bucket": null
+                },
+                "conflicts": [
+                    {
+                        "conflict_id": "JUICE-77-1:batch_mismatch",
+                        "type": "BATCH_MISMATCH",
+                        "item_id": "JUICE-77-1",
+                        "description": "warehouse batch 'J?7$Z1' does not match supplier batch 'JX7701'",
+                        "claim_ids": [
+                            "JUICE-77-1:warehouse:batch_code",
+                            "JUICE-77-1:supplier:evt-2:batch_code"
+                        ]
+                    },
+                    {
+                        "conflict_id": "JUICE-77-1:quantity_received_dispute",
+                        "type": "QUANTITY_OR_ELIGIBILITY_DISPUTE",
+                        "item_id": "JUICE-77-1",
+                        "description": "warehouse received 15 units, supplier acknowledged 14",
+                        "claim_ids": [
+                            "JUICE-77-1:warehouse:quantity_received",
+                            "JUICE-77-1:supplier:evt-2:acknowledged_quantity"
+                        ]
+                    }
+                ],
+                "evidence": [
+                    {
+                        "claim_id": "JUICE-77-1:warehouse:condition",
+                        "item_id": "JUICE-77-1",
+                        "field": "condition",
+                        "value": "GOOD",
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse direct physical inspection",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-12T09:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:warehouse:quantity_received",
+                        "item_id": "JUICE-77-1",
+                        "field": "quantity_received",
+                        "value": 15,
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse physical count on receipt",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-12T09:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:warehouse:best_before",
+                        "item_id": "JUICE-77-1",
+                        "field": "best_before",
+                        "value": "2027-01-01",
+                        "source": "WAREHOUSE",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "warehouse label reading",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-12T09:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:warehouse:batch_code",
+                        "item_id": "JUICE-77-1",
+                        "field": "batch_code",
+                        "value": "J?7$Z1",
+                        "source": "WAREHOUSE",
+                        "status": "CORRUPTED",
+                        "authority": "UNRESOLVED",
+                        "reason": "contains non-alphanumeric characters, not recoverable by substitution",
+                        "source_reference": "warehouse_report",
+                        "timestamp": "2026-08-12T09:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-2:batch_code",
+                        "item_id": "JUICE-77-1",
+                        "field": "batch_code",
+                        "value": "JX7701",
+                        "source": "SUPPLIER",
+                        "status": "UNRESOLVED",
+                        "authority": "DIRECT",
+                        "reason": "not corroborated by any known batch metadata for SKU JUICE-77",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-12T10:45:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-2:acknowledged_quantity",
+                        "item_id": "JUICE-77-1",
+                        "field": "acknowledged_quantity",
+                        "value": 14,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-12T10:45:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-2:credit_eligible",
+                        "item_id": "JUICE-77-1",
+                        "field": "credit_eligible",
+                        "value": false,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-12T10:45:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-2:credit_quantity",
+                        "item_id": "JUICE-77-1",
+                        "field": "credit_quantity",
+                        "value": 0,
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-12T10:45:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-2:instruction",
+                        "item_id": "JUICE-77-1",
+                        "field": "instruction",
+                        "value": "RESTOCK",
+                        "source": "SUPPLIER",
+                        "status": "ACCEPTED",
+                        "authority": "DIRECT",
+                        "reason": "current supplier state, resolved via event_timestamp ordering",
+                        "source_reference": "evt-2",
+                        "timestamp": "2026-08-12T10:45:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-1:batch_code",
+                        "item_id": "JUICE-77-1",
+                        "field": "batch_code",
+                        "value": "JX7701",
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-12T10:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-1:acknowledged_quantity",
+                        "item_id": "JUICE-77-1",
+                        "field": "acknowledged_quantity",
+                        "value": 14,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-12T10:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-1:credit_eligible",
+                        "item_id": "JUICE-77-1",
+                        "field": "credit_eligible",
+                        "value": false,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-12T10:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-1:credit_quantity",
+                        "item_id": "JUICE-77-1",
+                        "field": "credit_quantity",
+                        "value": 0,
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-12T10:00:00Z"
+                    },
+                    {
+                        "claim_id": "JUICE-77-1:supplier:evt-1:instruction",
+                        "item_id": "JUICE-77-1",
+                        "field": "instruction",
+                        "value": "SCRAP",
+                        "source": "SUPPLIER",
+                        "status": "SUPERSEDED",
+                        "authority": "DIRECT",
+                        "reason": "superseded by event evt-2 (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering)",
+                        "source_reference": "evt-1",
+                        "timestamp": "2026-08-12T10:00:00Z"
+                    }
+                ],
+                "resolved_fields": [
+                    {
+                        "field": "condition",
+                        "value": "GOOD",
+                        "winning_source": "WAREHOUSE",
+                        "provenance": "DIRECT",
+                        "reason": "warehouse has policy authority for condition",
+                        "rules_applied": [
+                            "R001"
+                        ],
+                        "accepted_claim_ids": [
+                            "JUICE-77-1:warehouse:condition"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "quantity_received",
+                        "value": 15,
+                        "winning_source": "WAREHOUSE",
+                        "provenance": "DIRECT",
+                        "reason": "warehouse has policy authority for quantity_received",
+                        "rules_applied": [],
+                        "accepted_claim_ids": [
+                            "JUICE-77-1:warehouse:quantity_received"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "batch_code",
+                        "value": null,
+                        "winning_source": null,
+                        "provenance": "UNRESOLVED",
+                        "reason": "warehouse batch is corrupted and the supplier batch cannot be independently corroborated against product metadata for SKU JUICE-77",
+                        "rules_applied": [
+                            "R002",
+                            "R007"
+                        ],
+                        "accepted_claim_ids": [],
+                        "rejected_claim_ids": [
+                            "JUICE-77-1:warehouse:batch_code",
+                            "JUICE-77-1:supplier:evt-2:batch_code"
+                        ]
+                    },
+                    {
+                        "field": "best_before",
+                        "value": null,
+                        "winning_source": null,
+                        "provenance": "UNRESOLVED",
+                        "reason": "batch identity is unresolved, best-before cannot be trusted for bucketing",
+                        "rules_applied": [
+                            "R007"
+                        ],
+                        "accepted_claim_ids": [],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "credit_eligible",
+                        "value": false,
+                        "winning_source": "SUPPLIER",
+                        "provenance": "DIRECT",
+                        "reason": "supplier has policy authority for credit_eligible",
+                        "rules_applied": [
+                            "R008"
+                        ],
+                        "accepted_claim_ids": [
+                            "JUICE-77-1:supplier:evt-2:credit_eligible"
+                        ],
+                        "rejected_claim_ids": []
+                    },
+                    {
+                        "field": "credit_quantity",
+                        "value": 0,
+                        "winning_source": "SUPPLIER",
+                        "provenance": "DIRECT",
+                        "reason": "supplier has policy authority for credit_quantity",
+                        "rules_applied": [
+                            "R008"
+                        ],
+                        "accepted_claim_ids": [
+                            "JUICE-77-1:supplier:evt-2:credit_quantity"
+                        ],
+                        "rejected_claim_ids": []
+                    }
+                ],
+                "rules_applied": [
+                    "R001",
+                    "R002",
+                    "R004",
+                    "R006",
+                    "R007",
+                    "R008"
+                ],
+                "allocations": [
+                    {
+                        "quantity": 15,
+                        "route": "QUARANTINE",
+                        "reason": "stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed",
+                        "best_before_bucket": null,
+                        "context": "unresolved_identity"
+                    }
+                ],
+                "commercial_decision": {
+                    "credit_eligible": false,
+                    "credit_quantity": 0,
+                    "reason": "supplier has policy authority for credit_eligible",
+                    "rules_applied": [
+                        "R008"
+                    ]
+                },
+                "invariants": [
+                    {
+                        "name": "R006_QUANTITY_CONSERVATION",
+                        "passed": true,
+                        "detail": "15 received, 15 allocated"
+                    }
+                ],
+                "reasoning": [
+                    "Condition: warehouse reports GOOD (0 of 15 units affected), direct observation (R001).",
+                    "Batch: resolved to None [UNRESOLVED]. warehouse batch is corrupted and the supplier batch cannot be independently corroborated against product metadata for SKU JUICE-77.",
+                    "Supplier timeline: current event evt-2 accepted (ordered by event_timestamp (current: 2026-08-12T10:45:00+00:00), received_at ignored for ordering).",
+                    "Supplier instruction: RESTOCK (event evt-2), a routing preference weighed against physical evidence, not followed automatically.",
+                    "Supplier timeline: event evt-1 marked SUPERSEDED.",
+                    "Conflicts detected: BATCH_MISMATCH, QUANTITY_OR_ELIGIBILITY_DISPUTE.",
+                    "Routing: 15 -> QUARANTINE (stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed).",
+                    "Commercial: credit_eligible=False, credit_quantity=0, kept separate from physical routing (R008)."
+                ],
+                "rejected_alternatives": [
+                    {
+                        "quantity": 15,
+                        "route": "QUARANTINE",
+                        "reason": "stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed",
+                        "best_before_bucket": null,
+                        "rejected_alternatives": [
+                            {
+                                "route": "RESTOCK",
+                                "reason": "batch identity or best-before date is unresolved, cannot assign a restock bucket"
+                            },
+                            {
+                                "route": "SCRAP",
+                                "reason": "stock is physically intact, there is no damage evidence to justify scrapping"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "summary": {
+            "item_count": 1,
+            "conflict_count": 2,
+            "invariants_passed": true
+        }
+    }
+}
