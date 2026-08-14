@@ -1,0 +1,76 @@
+cat > .gitignore <<'EOF'
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Package / build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# =========================
+# Testing / Coverage
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+junit.xml
+
+# =========================
+# Linters / Type Checkers
+# =========================
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.pytype/
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Runtime / Generated Data
+# =========================
+*.log
+*.jsonl
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =========================
+# Internal Development Notes
+# =========================
+AGENTS.md
+ASSESSMENT.md
+EVALUATION.md
+ROADMAP.md
+EOF

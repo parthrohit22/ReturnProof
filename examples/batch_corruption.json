@@ -1,0 +1,42 @@
+{
+  "return_id": "RET-2026-003",
+  "warehouse_report": {
+    "items": [
+      {
+        "item_id": "JUICE-12-1",
+        "sku": "JUICE-12",
+        "quantity_received": 15,
+        "condition": "GOOD",
+        "damaged_quantity": 0,
+        "batch_code": "B72$9#",
+        "best_before": "2026-11-02",
+        "inspection_timestamp": "2026-08-11T08:45:00Z"
+      }
+    ]
+  },
+  "supplier_events": [
+    {
+      "event_id": "evt-1",
+      "item_id": "JUICE-12-1",
+      "sku": "JUICE-12",
+      "batch_code": "BJ4402",
+      "acknowledged_quantity": 15,
+      "credit_eligible": true,
+      "credit_quantity": 0,
+      "instruction": "RESTOCK",
+      "event_timestamp": "2026-08-11T09:00:00Z",
+      "received_at": "2026-08-11T09:01:00Z"
+    }
+  ],
+  "product_metadata": [
+    {
+      "sku": "JUICE-12",
+      "known_batches": [
+        {
+          "batch_code": "BJ4402",
+          "best_before": "2026-11-02"
+        }
+      ]
+    }
+  ]
+}
