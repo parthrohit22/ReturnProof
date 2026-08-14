@@ -147,9 +147,15 @@ def parse_shipment(raw: dict) -> ReturnShipment:
     """Parse and validate a raw dict into a ReturnShipment, or raise a clean error.
 
     Wraps pydantic's ValidationError so the CLI can show a short, readable
-    message instead of a full traceback for expected bad input.
+    message instead of a full traceback for expected bad input, and so an
+    HTTP caller can get a structured per-field error list instead of
+    having to re-parse a rendered string.
     """
     try:
         return ReturnShipment.model_validate(raw)
     except ValidationError as exc:
-        raise InputValidationError(str(exc)) from exc
+        errors = [
+            {"path": ".".join(str(part) for part in err["loc"]), "message": err["msg"]}
+            for err in exc.errors(include_url=False)
+        ]
+        raise InputValidationError(str(exc), errors=errors) from exc
