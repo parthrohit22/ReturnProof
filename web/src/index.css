@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Surface hierarchy */
+  --color-background: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f1f2f5;
+
+  /* Borders */
+  --color-border: #e2e4e9;
+  --color-border-strong: #cbced6;
+
+  /* Text */
+  --color-text-primary: #14161a;
+  --color-text-secondary: #52565f;
+  --color-text-muted: #8b8f99;
+  --color-text-inverse: #ffffff;
+
+  /* Semantic accents */
+  --color-success: #0f7a4a;
+  --color-success-surface: #eafaf1;
+  --color-success-border: #b6e6c9;
+
+  --color-danger: #b3261e;
+  --color-danger-surface: #fdecea;
+  --color-danger-border: #f2b8b3;
+
+  --color-warning: #92600a;
+  --color-warning-surface: #fdf3e0;
+  --color-warning-border: #f0d38f;
+
+  --color-information: #1a5ba8;
+  --color-information-surface: #eaf2fc;
+  --color-information-border: #b7d2f2;
+
+  --color-neutral: #52565f;
+  --color-neutral-surface: #f1f2f5;
+  --color-neutral-border: #dcdfe5;
+
+  /* Brand accent, used sparingly */
+  --color-accent: #2b3a67;
+  --color-accent-surface: #eef1f8;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+::selection {
+  background-color: var(--color-accent-surface);
+}
+
+.font-mono-tabular {
+  font-variant-numeric: tabular-nums;
+}
