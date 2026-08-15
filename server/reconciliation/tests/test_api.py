@@ -102,6 +102,50 @@ def test_create_reconciliation_compound_failure_values(client, compound_failure_
     assert body["quantity_received"] == 24
 
 
+def test_create_reconciliation_multi_item_matches_direct_engine_output_per_item(
+    client, multi_item_return_payload
+):
+    """HIGH-2 regression: the API/core parity guarantee must hold per item,
+    not just for the single-item shipments the rest of this file uses. Also
+    the one place summary_status is checked against a shipment where the
+    quarantine comes from one item out of several, not the only item.
+    """
+    response = client.post(
+        f"{API}/reconciliations",
+        data=json.dumps(multi_item_return_payload),
+        content_type="application/json",
+    )
+    assert response.status_code == 201
+    body = response.json()
+
+    direct_report = reconcile(parse_shipment(multi_item_return_payload))
+    api_items = body["audit_report"]["items"]
+
+    assert [item["item_id"] for item in api_items] == [
+        item.item_id for item in direct_report.items
+    ]
+    assert len(api_items) == 3
+
+    for api_item, direct_item in zip(api_items, direct_report.items, strict=True):
+        assert api_item["resolved"] == direct_item.resolved.model_dump(mode="json")
+        assert [(a["quantity"], a["route"]) for a in api_item["allocations"]] == [
+            (a.quantity, a.route.value) for a in direct_item.allocations
+        ]
+        assert api_item["rules_applied"] == direct_item.rules_applied
+        assert (
+            api_item["commercial_decision"]["credit_quantity"]
+            == direct_item.commercial_decision.credit_quantity
+        )
+
+    assert body["summary_status"] == "REQUIRES_REVIEW"
+    assert body["route_totals"] == {"RESTOCK": 20, "SCRAP": 8, "QUARANTINE": 12}
+    assert body["quantity_received"] == 40
+
+    run = ReconciliationRun.objects.get(id=body["id"])
+    assert len(run.audit_report["items"]) == 3
+    assert run.summary_status == "REQUIRES_REVIEW"
+
+
 def test_create_reconciliation_compound_unresolved_requires_review(
     client, compound_unresolved_payload
 ):
