@@ -358,6 +358,24 @@ R006 checks `SCRAP + RESTOCK + QUARANTINE == quantity_received` explicitly
 on every item and reports PASS or FAIL, it isn't just implied by the
 absence of an error.
 
+## Multiple items per return
+
+A return shipment isn't limited to one SKU. `examples/multi_item_return.json`
+carries three items in a single shipment, each reconciled independently:
+
+```text
+CEREAL-12-1  -> RESTOCK      (batch corroborated, no conflicts)
+YOGURT-22-1  -> SCRAP        (confirmed unsafe damage, R005 override)
+SAUCE-99-1   -> QUARANTINE   (batch identity unresolved, R007)
+```
+
+Evidence, conflicts, resolved fields, allocations, and rules stay scoped to
+the item they belong to, one item's supplier events or batch state never
+affect another item's decision. The Operator Console's item switcher moves
+between items within the same reconciliation; the shipment's overall
+`RESOLVED` / `REQUIRES_REVIEW` status reflects whether any item needed
+quarantine, not just the currently selected one.
+
 ## Physical vs commercial decisions
 
 Physical routing and supplier credit are resolved on entirely separate
@@ -604,6 +622,7 @@ server-side, never a traceback in the response) for anything unexpected.
 | `partial_allocation.json` | One SKU split across QUARANTINE and RESTOCK by condition |
 | `compound_failure.json` | Both mandatory failure modes together, resolved with evidence |
 | `compound_unresolved.json` | Both mandatory failure modes together, with insufficient evidence to resolve identity |
+| `multi_item_return.json` | Three items in one shipment, independently resolving to RESTOCK, SCRAP, and QUARANTINE |
 
 ## Example output
 
@@ -634,10 +653,10 @@ for a downstream system to consume.
 pytest
 ```
 
-86 tests across validation, evidence extraction, temporal ordering,
+97 tests across validation, evidence extraction, temporal ordering,
 conflict detection, batch resolution, quantity handling, partial
-allocation, the conservation invariant, both compound scenarios, and the
-CLI. High-value cases beyond the basic ones:
+allocation, the conservation invariant, multi-item shipments, both
+compound scenarios, and the CLI. High-value cases beyond the basic ones:
 
 - permutation invariance, the same supplier events in every possible
   array order resolve to the same state
@@ -657,6 +676,11 @@ CLI. High-value cases beyond the basic ones:
   check, checked directly against the invariant function
 - the human and JSON outputs agreeing on every material value for the
   same input
+- a malformed `batch_pattern` regex rejected as a validation error at parse
+  time, never reaching the classifier as an unhandled exception
+- a three-item shipment resolving to RESTOCK, SCRAP, and QUARANTINE
+  independently, with evidence, conflicts, and rules staying scoped to
+  the item they belong to
 
 ```bash
 ruff check src/ tests/ server/
@@ -673,11 +697,12 @@ installed to run):
 cd server && pytest
 ```
 
-31 tests covering every endpoint, the allowlisted example lookup
+33 tests covering every endpoint, the allowlisted example lookup
 (including path-traversal attempts), and the property this layer exists to
 guarantee: `test_create_reconciliation_matches_direct_engine_output` calls
 the engine directly and asserts the API's response matches it field for
-field, the API is an adapter, not a second engine.
+field, the API is an adapter, not a second engine. That parity check is
+also run against the multi-item fixture, per item.
 
 The frontend has unit/integration tests (Vitest + React Testing Library)
 and a small set of end-to-end tests (Playwright) against the real Django
@@ -691,11 +716,15 @@ npm run test:e2e   # Playwright, starts Django and Vite itself
 
 The Vitest suite covers the resolvable and unresolved compound flows,
 structured validation error rendering, physical/commercial separation in
-the UI, and API-unreachable recovery, against real captured API responses
-(`web/src/test/fixtures/`), not invented data. Playwright drives all seven
-example scenarios through a real browser against the real stack, asserts
-zero console errors, and checks that a saved reconciliation survives a
-page refresh.
+the UI, multi-item switching (each item's own routing and evidence, no
+leftover state from the previously selected item), and API-unreachable
+recovery, against real captured API responses (`web/src/test/fixtures/`),
+not invented data. Playwright drives all seven single-item example
+scenarios through a real browser against the real stack, asserts zero
+console errors, and checks that a saved reconciliation survives a page
+refresh; a further multi-item scenario spec exists alongside these
+(`e2e/multi-item.spec.ts`) for environments with a matching Playwright
+browser install.
 
 ```bash
 cd web
