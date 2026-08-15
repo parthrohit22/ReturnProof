@@ -3,4 +3,4 @@
 from returnproof.reconciler import reconcile
 
 __all__ = ["reconcile"]
-__version__ = "0.2.0"
+__version__ = "0.2.1"
