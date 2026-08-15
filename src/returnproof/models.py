@@ -6,9 +6,10 @@ a structured, validated shape for evidence extraction to work from.
 
 from __future__ import annotations
 
+import re
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from returnproof.enums import Condition, SupplierInstruction
 
@@ -79,6 +80,23 @@ class ProductMetadata(BaseModel):
     batch_pattern: str | None = None
     """SKU-specific batch code regex, overriding validation.py's default demo grammar
     (two letters + 4-6 digits). Optional, most SKUs rely on the default."""
+
+    @field_validator("batch_pattern")
+    @classmethod
+    def _batch_pattern_must_be_a_valid_regex(cls, value: str | None) -> str | None:
+        """A malformed regex is bad input, not uncertain business evidence, it
+        must fail here, at parse time, rather than reach classify_batch() mid
+        reconciliation and raise re.error. This is the one authoritative place
+        batch_pattern syntax is checked, see validation.classify_batch()'s own
+        guard for why a second check still exists there.
+        """
+        if value is None:
+            return value
+        try:
+            re.compile(value)
+        except re.error as exc:
+            raise ValueError(f"batch_pattern is not a valid regular expression: {exc}") from exc
+        return value
 
 
 class ReturnShipment(BaseModel):

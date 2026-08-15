@@ -22,3 +22,8 @@ def compound_unresolved_payload() -> dict:
 @pytest.fixture
 def batch_corruption_payload() -> dict:
     return _load_example("batch_corruption")
+
+
+@pytest.fixture
+def multi_item_return_payload() -> dict:
+    return _load_example("multi_item_return")

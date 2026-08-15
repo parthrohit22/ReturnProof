@@ -1,0 +1,90 @@
+{
+  "return_id": "RET-2026-008",
+  "warehouse_report": {
+    "items": [
+      {
+        "item_id": "CEREAL-12-1",
+        "sku": "CEREAL-12",
+        "quantity_received": 20,
+        "condition": "GOOD",
+        "damaged_quantity": 0,
+        "batch_code": "CE4471",
+        "best_before": "2027-03-01",
+        "inspection_timestamp": "2026-08-14T08:30:00Z"
+      },
+      {
+        "item_id": "YOGURT-22-1",
+        "sku": "YOGURT-22",
+        "quantity_received": 8,
+        "condition": "DAMAGED_UNSAFE",
+        "damage_type": "crushed cups, product leaking",
+        "damaged_quantity": 8,
+        "batch_code": "YG3310",
+        "best_before": "2026-09-20",
+        "inspection_timestamp": "2026-08-14T08:35:00Z"
+      },
+      {
+        "item_id": "SAUCE-99-1",
+        "sku": "SAUCE-99",
+        "quantity_received": 12,
+        "condition": "GOOD",
+        "damaged_quantity": 0,
+        "batch_code": "SA?019",
+        "best_before": "2027-05-01",
+        "inspection_timestamp": "2026-08-14T08:40:00Z"
+      }
+    ]
+  },
+  "supplier_events": [
+    {
+      "event_id": "evt-cereal-1",
+      "item_id": "CEREAL-12-1",
+      "sku": "CEREAL-12",
+      "batch_code": "CE4471",
+      "acknowledged_quantity": 20,
+      "credit_eligible": true,
+      "credit_quantity": 0,
+      "instruction": "RESTOCK",
+      "event_timestamp": "2026-08-14T10:00:00Z",
+      "received_at": "2026-08-14T10:05:00Z"
+    },
+    {
+      "event_id": "evt-yogurt-1",
+      "item_id": "YOGURT-22-1",
+      "sku": "YOGURT-22",
+      "batch_code": "YG3310",
+      "acknowledged_quantity": 8,
+      "credit_eligible": true,
+      "credit_quantity": 8,
+      "instruction": "RESTOCK",
+      "event_timestamp": "2026-08-14T10:02:00Z",
+      "received_at": "2026-08-14T10:06:00Z"
+    },
+    {
+      "event_id": "evt-sauce-1",
+      "item_id": "SAUCE-99-1",
+      "sku": "SAUCE-99",
+      "batch_code": "SA0555",
+      "acknowledged_quantity": 12,
+      "credit_eligible": false,
+      "credit_quantity": 0,
+      "instruction": "RESTOCK",
+      "event_timestamp": "2026-08-14T10:04:00Z",
+      "received_at": "2026-08-14T10:07:00Z"
+    }
+  ],
+  "product_metadata": [
+    {
+      "sku": "CEREAL-12",
+      "known_batches": [
+        { "batch_code": "CE4471", "best_before": "2027-03-01" }
+      ]
+    },
+    {
+      "sku": "SAUCE-99",
+      "known_batches": [
+        { "batch_code": "SA9999", "best_before": "2027-05-01" }
+      ]
+    }
+  ]
+}

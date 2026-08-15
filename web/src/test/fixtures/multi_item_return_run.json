@@ -1,0 +1,941 @@
+{
+  "id": "55b51190-f465-421d-8330-c542b246e7ce",
+  "return_id": "RET-2026-008",
+  "scenario_name": "multi_item_return",
+  "summary_status": "REQUIRES_REVIEW",
+  "item_count": 3,
+  "conflict_count": 2,
+  "quantity_received": 40,
+  "route_totals": {
+    "RESTOCK": 20,
+    "SCRAP": 8,
+    "QUARANTINE": 12
+  },
+  "created_at": "2026-08-15T11:31:00.728438+00:00",
+  "input_payload": {
+    "return_id": "RET-2026-008",
+    "warehouse_report": {
+      "items": [
+        {
+          "item_id": "CEREAL-12-1",
+          "sku": "CEREAL-12",
+          "quantity_received": 20,
+          "condition": "GOOD",
+          "damaged_quantity": 0,
+          "batch_code": "CE4471",
+          "best_before": "2027-03-01",
+          "inspection_timestamp": "2026-08-14T08:30:00Z"
+        },
+        {
+          "item_id": "YOGURT-22-1",
+          "sku": "YOGURT-22",
+          "quantity_received": 8,
+          "condition": "DAMAGED_UNSAFE",
+          "damage_type": "crushed cups, product leaking",
+          "damaged_quantity": 8,
+          "batch_code": "YG3310",
+          "best_before": "2026-09-20",
+          "inspection_timestamp": "2026-08-14T08:35:00Z"
+        },
+        {
+          "item_id": "SAUCE-99-1",
+          "sku": "SAUCE-99",
+          "quantity_received": 12,
+          "condition": "GOOD",
+          "damaged_quantity": 0,
+          "batch_code": "SA?019",
+          "best_before": "2027-05-01",
+          "inspection_timestamp": "2026-08-14T08:40:00Z"
+        }
+      ]
+    },
+    "supplier_events": [
+      {
+        "event_id": "evt-cereal-1",
+        "item_id": "CEREAL-12-1",
+        "sku": "CEREAL-12",
+        "batch_code": "CE4471",
+        "acknowledged_quantity": 20,
+        "credit_eligible": true,
+        "credit_quantity": 0,
+        "instruction": "RESTOCK",
+        "event_timestamp": "2026-08-14T10:00:00Z",
+        "received_at": "2026-08-14T10:05:00Z"
+      },
+      {
+        "event_id": "evt-yogurt-1",
+        "item_id": "YOGURT-22-1",
+        "sku": "YOGURT-22",
+        "batch_code": "YG3310",
+        "acknowledged_quantity": 8,
+        "credit_eligible": true,
+        "credit_quantity": 8,
+        "instruction": "RESTOCK",
+        "event_timestamp": "2026-08-14T10:02:00Z",
+        "received_at": "2026-08-14T10:06:00Z"
+      },
+      {
+        "event_id": "evt-sauce-1",
+        "item_id": "SAUCE-99-1",
+        "sku": "SAUCE-99",
+        "batch_code": "SA0555",
+        "acknowledged_quantity": 12,
+        "credit_eligible": false,
+        "credit_quantity": 0,
+        "instruction": "RESTOCK",
+        "event_timestamp": "2026-08-14T10:04:00Z",
+        "received_at": "2026-08-14T10:07:00Z"
+      }
+    ],
+    "product_metadata": [
+      {
+        "sku": "CEREAL-12",
+        "known_batches": [
+          {
+            "batch_code": "CE4471",
+            "best_before": "2027-03-01"
+          }
+        ]
+      },
+      {
+        "sku": "SAUCE-99",
+        "known_batches": [
+          {
+            "batch_code": "SA9999",
+            "best_before": "2027-05-01"
+          }
+        ]
+      }
+    ]
+  },
+  "audit_report": {
+    "return_id": "RET-2026-008",
+    "items": [
+      {
+        "item_id": "CEREAL-12-1",
+        "sku": "CEREAL-12",
+        "resolved": {
+          "condition": "GOOD",
+          "batch_code": "CE4471",
+          "best_before_bucket": "2027-03"
+        },
+        "conflicts": [],
+        "evidence": [
+          {
+            "claim_id": "CEREAL-12-1:warehouse:condition",
+            "item_id": "CEREAL-12-1",
+            "field": "condition",
+            "value": "GOOD",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse direct physical inspection",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:30:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:warehouse:quantity_received",
+            "item_id": "CEREAL-12-1",
+            "field": "quantity_received",
+            "value": 20,
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse physical count on receipt",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:30:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:warehouse:best_before",
+            "item_id": "CEREAL-12-1",
+            "field": "best_before",
+            "value": "2027-03-01",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse label reading",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:30:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:warehouse:batch_code",
+            "item_id": "CEREAL-12-1",
+            "field": "batch_code",
+            "value": "CE4471",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse scanned batch code",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:30:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:supplier:evt-cereal-1:batch_code",
+            "item_id": "CEREAL-12-1",
+            "field": "batch_code",
+            "value": "CE4471",
+            "source": "SUPPLIER",
+            "status": "CORROBORATED",
+            "authority": "DIRECT",
+            "reason": "agrees with a well-formed warehouse batch code",
+            "source_reference": "evt-cereal-1",
+            "timestamp": "2026-08-14T10:00:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:supplier:evt-cereal-1:acknowledged_quantity",
+            "item_id": "CEREAL-12-1",
+            "field": "acknowledged_quantity",
+            "value": 20,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-cereal-1",
+            "timestamp": "2026-08-14T10:00:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:supplier:evt-cereal-1:credit_eligible",
+            "item_id": "CEREAL-12-1",
+            "field": "credit_eligible",
+            "value": true,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-cereal-1",
+            "timestamp": "2026-08-14T10:00:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:supplier:evt-cereal-1:credit_quantity",
+            "item_id": "CEREAL-12-1",
+            "field": "credit_quantity",
+            "value": 0,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-cereal-1",
+            "timestamp": "2026-08-14T10:00:00Z"
+          },
+          {
+            "claim_id": "CEREAL-12-1:supplier:evt-cereal-1:instruction",
+            "item_id": "CEREAL-12-1",
+            "field": "instruction",
+            "value": "RESTOCK",
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-cereal-1",
+            "timestamp": "2026-08-14T10:00:00Z"
+          }
+        ],
+        "resolved_fields": [
+          {
+            "field": "condition",
+            "value": "GOOD",
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for condition",
+            "rules_applied": [
+              "R001"
+            ],
+            "accepted_claim_ids": [
+              "CEREAL-12-1:warehouse:condition"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "quantity_received",
+            "value": 20,
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for quantity_received",
+            "rules_applied": [],
+            "accepted_claim_ids": [
+              "CEREAL-12-1:warehouse:quantity_received"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "batch_code",
+            "value": "CE4471",
+            "winning_source": "WAREHOUSE",
+            "provenance": "CORROBORATED",
+            "reason": "warehouse batch code is well-formed and independently agreed by supplier",
+            "rules_applied": [
+              "R001",
+              "R003"
+            ],
+            "accepted_claim_ids": [
+              "CEREAL-12-1:warehouse:batch_code",
+              "CEREAL-12-1:supplier:evt-cereal-1:batch_code"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "best_before",
+            "value": "2027-03-01",
+            "winning_source": "DERIVED",
+            "provenance": "CORROBORATED",
+            "reason": "taken from product metadata for the corroborated batch",
+            "rules_applied": [
+              "R003"
+            ],
+            "accepted_claim_ids": [],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_eligible",
+            "value": true,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_eligible",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "CEREAL-12-1:supplier:evt-cereal-1:credit_eligible"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_quantity",
+            "value": 0,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_quantity",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "CEREAL-12-1:supplier:evt-cereal-1:credit_quantity"
+            ],
+            "rejected_claim_ids": []
+          }
+        ],
+        "rules_applied": [
+          "R001",
+          "R003",
+          "R006",
+          "R008"
+        ],
+        "allocations": [
+          {
+            "quantity": 20,
+            "route": "RESTOCK",
+            "reason": "intact stock with resolved batch identity and best-before date",
+            "best_before_bucket": "2027-03",
+            "context": "resolved_good"
+          }
+        ],
+        "commercial_decision": {
+          "credit_eligible": true,
+          "credit_quantity": 0,
+          "reason": "supplier has policy authority for credit_eligible",
+          "rules_applied": [
+            "R008"
+          ]
+        },
+        "invariants": [
+          {
+            "name": "R006_QUANTITY_CONSERVATION",
+            "passed": true,
+            "detail": "20 received, 20 allocated"
+          }
+        ],
+        "reasoning": [
+          "Condition: warehouse reports GOOD (0 of 20 units affected), direct observation (R001).",
+          "Batch: resolved to 'CE4471' [CORROBORATED]. warehouse batch code is well-formed and independently agreed by supplier.",
+          "Supplier timeline: current event evt-cereal-1 accepted (ordered by event_timestamp (current: 2026-08-14T10:00:00+00:00), received_at ignored for ordering).",
+          "Supplier instruction: RESTOCK (event evt-cereal-1), a routing preference weighed against physical evidence, not followed automatically.",
+          "Routing: 20 -> RESTOCK / 2027-03 (intact stock with resolved batch identity and best-before date).",
+          "Commercial: credit_eligible=True, credit_quantity=0, kept separate from physical routing (R008)."
+        ],
+        "rejected_alternatives": [
+          {
+            "quantity": 20,
+            "route": "RESTOCK",
+            "reason": "intact stock with resolved batch identity and best-before date",
+            "best_before_bucket": "2027-03",
+            "rejected_alternatives": [
+              {
+                "route": "SCRAP",
+                "reason": "no evidence of damage in this portion"
+              },
+              {
+                "route": "QUARANTINE",
+                "reason": "identity and condition are both sufficiently resolved, no need for manual inspection"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_id": "YOGURT-22-1",
+        "sku": "YOGURT-22",
+        "resolved": {
+          "condition": "DAMAGED_UNSAFE",
+          "batch_code": "YG3310",
+          "best_before_bucket": "2026-09"
+        },
+        "conflicts": [
+          {
+            "conflict_id": "YOGURT-22-1:condition_disagreement",
+            "type": "CONDITION_DISAGREEMENT",
+            "item_id": "YOGURT-22-1",
+            "description": "warehouse reports condition DAMAGED_UNSAFE but supplier event evt-yogurt-1 instructs RESTOCK",
+            "claim_ids": [
+              "YOGURT-22-1:warehouse:condition",
+              "YOGURT-22-1:supplier:evt-yogurt-1:instruction"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "claim_id": "YOGURT-22-1:warehouse:condition",
+            "item_id": "YOGURT-22-1",
+            "field": "condition",
+            "value": "DAMAGED_UNSAFE",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse direct physical inspection",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:35:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:warehouse:damage_type",
+            "item_id": "YOGURT-22-1",
+            "field": "damage_type",
+            "value": "crushed cups, product leaking",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse direct physical inspection",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:35:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:warehouse:quantity_received",
+            "item_id": "YOGURT-22-1",
+            "field": "quantity_received",
+            "value": 8,
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse physical count on receipt",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:35:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:warehouse:best_before",
+            "item_id": "YOGURT-22-1",
+            "field": "best_before",
+            "value": "2026-09-20",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse label reading",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:35:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:warehouse:batch_code",
+            "item_id": "YOGURT-22-1",
+            "field": "batch_code",
+            "value": "YG3310",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse scanned batch code",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:35:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:supplier:evt-yogurt-1:batch_code",
+            "item_id": "YOGURT-22-1",
+            "field": "batch_code",
+            "value": "YG3310",
+            "source": "SUPPLIER",
+            "status": "CORROBORATED",
+            "authority": "DIRECT",
+            "reason": "agrees with a well-formed warehouse batch code",
+            "source_reference": "evt-yogurt-1",
+            "timestamp": "2026-08-14T10:02:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:supplier:evt-yogurt-1:acknowledged_quantity",
+            "item_id": "YOGURT-22-1",
+            "field": "acknowledged_quantity",
+            "value": 8,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-yogurt-1",
+            "timestamp": "2026-08-14T10:02:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:supplier:evt-yogurt-1:credit_eligible",
+            "item_id": "YOGURT-22-1",
+            "field": "credit_eligible",
+            "value": true,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-yogurt-1",
+            "timestamp": "2026-08-14T10:02:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:supplier:evt-yogurt-1:credit_quantity",
+            "item_id": "YOGURT-22-1",
+            "field": "credit_quantity",
+            "value": 8,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-yogurt-1",
+            "timestamp": "2026-08-14T10:02:00Z"
+          },
+          {
+            "claim_id": "YOGURT-22-1:supplier:evt-yogurt-1:instruction",
+            "item_id": "YOGURT-22-1",
+            "field": "instruction",
+            "value": "RESTOCK",
+            "source": "SUPPLIER",
+            "status": "REJECTED",
+            "authority": "DIRECT",
+            "reason": "overridden by physical safety override (R005): warehouse confirmed unsafe damage",
+            "source_reference": "evt-yogurt-1",
+            "timestamp": "2026-08-14T10:02:00Z"
+          }
+        ],
+        "resolved_fields": [
+          {
+            "field": "condition",
+            "value": "DAMAGED_UNSAFE",
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for condition",
+            "rules_applied": [
+              "R001"
+            ],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:warehouse:condition"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "quantity_received",
+            "value": 8,
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for quantity_received",
+            "rules_applied": [],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:warehouse:quantity_received"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "batch_code",
+            "value": "YG3310",
+            "winning_source": "WAREHOUSE",
+            "provenance": "CORROBORATED",
+            "reason": "warehouse batch code is well-formed and independently agreed by supplier",
+            "rules_applied": [
+              "R001",
+              "R003"
+            ],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:warehouse:batch_code",
+              "YOGURT-22-1:supplier:evt-yogurt-1:batch_code"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "best_before",
+            "value": "2026-09-20",
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse label reading, batch identity independently resolved",
+            "rules_applied": [
+              "R001"
+            ],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:warehouse:best_before"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_eligible",
+            "value": true,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_eligible",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:supplier:evt-yogurt-1:credit_eligible"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_quantity",
+            "value": 8,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_quantity",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "YOGURT-22-1:supplier:evt-yogurt-1:credit_quantity"
+            ],
+            "rejected_claim_ids": []
+          }
+        ],
+        "rules_applied": [
+          "R001",
+          "R003",
+          "R005",
+          "R006",
+          "R008"
+        ],
+        "allocations": [
+          {
+            "quantity": 8,
+            "route": "SCRAP",
+            "reason": "DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction",
+            "best_before_bucket": null,
+            "context": "unsafe_damage"
+          }
+        ],
+        "commercial_decision": {
+          "credit_eligible": true,
+          "credit_quantity": 8,
+          "reason": "supplier has policy authority for credit_eligible",
+          "rules_applied": [
+            "R008"
+          ]
+        },
+        "invariants": [
+          {
+            "name": "R006_QUANTITY_CONSERVATION",
+            "passed": true,
+            "detail": "8 received, 8 allocated"
+          }
+        ],
+        "reasoning": [
+          "Condition: warehouse reports DAMAGED_UNSAFE (8 of 8 units affected), direct observation (R001).",
+          "Batch: resolved to 'YG3310' [CORROBORATED]. warehouse batch code is well-formed and independently agreed by supplier.",
+          "Supplier timeline: current event evt-yogurt-1 accepted (ordered by event_timestamp (current: 2026-08-14T10:02:00+00:00), received_at ignored for ordering).",
+          "Supplier instruction: RESTOCK (event evt-yogurt-1), a routing preference weighed against physical evidence, not followed automatically.",
+          "Conflicts detected: CONDITION_DISAGREEMENT.",
+          "Routing: 8 -> SCRAP (DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction).",
+          "Commercial: credit_eligible=True, credit_quantity=8, kept separate from physical routing (R008)."
+        ],
+        "rejected_alternatives": [
+          {
+            "quantity": 8,
+            "route": "SCRAP",
+            "reason": "DAMAGED_UNSAFE confirmed by warehouse inspection, unsafe for restock regardless of supplier instruction",
+            "best_before_bucket": null,
+            "rejected_alternatives": [
+              {
+                "route": "RESTOCK",
+                "reason": "physical damage was confirmed unsafe, restocking it would ship unsafe stock"
+              },
+              {
+                "route": "QUARANTINE",
+                "reason": "damage is conclusively unsafe, holding it for inspection would not change the outcome"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_id": "SAUCE-99-1",
+        "sku": "SAUCE-99",
+        "resolved": {
+          "condition": "GOOD",
+          "batch_code": null,
+          "best_before_bucket": null
+        },
+        "conflicts": [
+          {
+            "conflict_id": "SAUCE-99-1:batch_mismatch",
+            "type": "BATCH_MISMATCH",
+            "item_id": "SAUCE-99-1",
+            "description": "warehouse batch 'SA?019' does not match supplier batch 'SA0555'",
+            "claim_ids": [
+              "SAUCE-99-1:warehouse:batch_code",
+              "SAUCE-99-1:supplier:evt-sauce-1:batch_code"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "claim_id": "SAUCE-99-1:warehouse:condition",
+            "item_id": "SAUCE-99-1",
+            "field": "condition",
+            "value": "GOOD",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse direct physical inspection",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:40:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:warehouse:quantity_received",
+            "item_id": "SAUCE-99-1",
+            "field": "quantity_received",
+            "value": 12,
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse physical count on receipt",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:40:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:warehouse:best_before",
+            "item_id": "SAUCE-99-1",
+            "field": "best_before",
+            "value": "2027-05-01",
+            "source": "WAREHOUSE",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "warehouse label reading",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:40:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:warehouse:batch_code",
+            "item_id": "SAUCE-99-1",
+            "field": "batch_code",
+            "value": "SA?019",
+            "source": "WAREHOUSE",
+            "status": "CORRUPTED",
+            "authority": "UNRESOLVED",
+            "reason": "contains non-alphanumeric characters, not recoverable by substitution",
+            "source_reference": "warehouse_report",
+            "timestamp": "2026-08-14T08:40:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:supplier:evt-sauce-1:batch_code",
+            "item_id": "SAUCE-99-1",
+            "field": "batch_code",
+            "value": "SA0555",
+            "source": "SUPPLIER",
+            "status": "UNRESOLVED",
+            "authority": "DIRECT",
+            "reason": "not corroborated by any known batch metadata for SKU SAUCE-99",
+            "source_reference": "evt-sauce-1",
+            "timestamp": "2026-08-14T10:04:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:supplier:evt-sauce-1:acknowledged_quantity",
+            "item_id": "SAUCE-99-1",
+            "field": "acknowledged_quantity",
+            "value": 12,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-sauce-1",
+            "timestamp": "2026-08-14T10:04:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:supplier:evt-sauce-1:credit_eligible",
+            "item_id": "SAUCE-99-1",
+            "field": "credit_eligible",
+            "value": false,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-sauce-1",
+            "timestamp": "2026-08-14T10:04:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:supplier:evt-sauce-1:credit_quantity",
+            "item_id": "SAUCE-99-1",
+            "field": "credit_quantity",
+            "value": 0,
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-sauce-1",
+            "timestamp": "2026-08-14T10:04:00Z"
+          },
+          {
+            "claim_id": "SAUCE-99-1:supplier:evt-sauce-1:instruction",
+            "item_id": "SAUCE-99-1",
+            "field": "instruction",
+            "value": "RESTOCK",
+            "source": "SUPPLIER",
+            "status": "ACCEPTED",
+            "authority": "DIRECT",
+            "reason": "current supplier state, resolved via event_timestamp ordering",
+            "source_reference": "evt-sauce-1",
+            "timestamp": "2026-08-14T10:04:00Z"
+          }
+        ],
+        "resolved_fields": [
+          {
+            "field": "condition",
+            "value": "GOOD",
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for condition",
+            "rules_applied": [
+              "R001"
+            ],
+            "accepted_claim_ids": [
+              "SAUCE-99-1:warehouse:condition"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "quantity_received",
+            "value": 12,
+            "winning_source": "WAREHOUSE",
+            "provenance": "DIRECT",
+            "reason": "warehouse has policy authority for quantity_received",
+            "rules_applied": [],
+            "accepted_claim_ids": [
+              "SAUCE-99-1:warehouse:quantity_received"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "batch_code",
+            "value": null,
+            "winning_source": null,
+            "provenance": "UNRESOLVED",
+            "reason": "warehouse batch is corrupted and the supplier batch cannot be independently corroborated against product metadata for SKU SAUCE-99",
+            "rules_applied": [
+              "R002",
+              "R007"
+            ],
+            "accepted_claim_ids": [],
+            "rejected_claim_ids": [
+              "SAUCE-99-1:warehouse:batch_code",
+              "SAUCE-99-1:supplier:evt-sauce-1:batch_code"
+            ]
+          },
+          {
+            "field": "best_before",
+            "value": null,
+            "winning_source": null,
+            "provenance": "UNRESOLVED",
+            "reason": "batch identity is unresolved, best-before cannot be trusted for bucketing",
+            "rules_applied": [
+              "R007"
+            ],
+            "accepted_claim_ids": [],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_eligible",
+            "value": false,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_eligible",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "SAUCE-99-1:supplier:evt-sauce-1:credit_eligible"
+            ],
+            "rejected_claim_ids": []
+          },
+          {
+            "field": "credit_quantity",
+            "value": 0,
+            "winning_source": "SUPPLIER",
+            "provenance": "DIRECT",
+            "reason": "supplier has policy authority for credit_quantity",
+            "rules_applied": [
+              "R008"
+            ],
+            "accepted_claim_ids": [
+              "SAUCE-99-1:supplier:evt-sauce-1:credit_quantity"
+            ],
+            "rejected_claim_ids": []
+          }
+        ],
+        "rules_applied": [
+          "R001",
+          "R002",
+          "R006",
+          "R007",
+          "R008"
+        ],
+        "allocations": [
+          {
+            "quantity": 12,
+            "route": "QUARANTINE",
+            "reason": "stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed",
+            "best_before_bucket": null,
+            "context": "unresolved_identity"
+          }
+        ],
+        "commercial_decision": {
+          "credit_eligible": false,
+          "credit_quantity": 0,
+          "reason": "supplier has policy authority for credit_eligible",
+          "rules_applied": [
+            "R008"
+          ]
+        },
+        "invariants": [
+          {
+            "name": "R006_QUANTITY_CONSERVATION",
+            "passed": true,
+            "detail": "12 received, 12 allocated"
+          }
+        ],
+        "reasoning": [
+          "Condition: warehouse reports GOOD (0 of 12 units affected), direct observation (R001).",
+          "Batch: resolved to None [UNRESOLVED]. warehouse batch is corrupted and the supplier batch cannot be independently corroborated against product metadata for SKU SAUCE-99.",
+          "Supplier timeline: current event evt-sauce-1 accepted (ordered by event_timestamp (current: 2026-08-14T10:04:00+00:00), received_at ignored for ordering).",
+          "Supplier instruction: RESTOCK (event evt-sauce-1), a routing preference weighed against physical evidence, not followed automatically.",
+          "Conflicts detected: BATCH_MISMATCH.",
+          "Routing: 12 -> QUARANTINE (stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed).",
+          "Commercial: credit_eligible=False, credit_quantity=0, kept separate from physical routing (R008)."
+        ],
+        "rejected_alternatives": [
+          {
+            "quantity": 12,
+            "route": "QUARANTINE",
+            "reason": "stock is physically intact but batch identity or best-before date is unresolved, held for manual inspection rather than guessed",
+            "best_before_bucket": null,
+            "rejected_alternatives": [
+              {
+                "route": "RESTOCK",
+                "reason": "batch identity or best-before date is unresolved, cannot assign a restock bucket"
+              },
+              {
+                "route": "SCRAP",
+                "reason": "stock is physically intact, there is no damage evidence to justify scrapping"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "item_count": 3,
+      "conflict_count": 2,
+      "invariants_passed": true
+    }
+  }
+}

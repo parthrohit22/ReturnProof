@@ -95,6 +95,15 @@ def classify_batch(raw: str | None, pattern: str | None = None) -> BatchAssessme
     `ProductMetadata.batch_pattern`) that replaces the default grammar
     entirely, including its alphanumeric-only and repair-candidate
     assumptions, see the module docstring.
+
+    `pattern` syntax is normally already guaranteed valid by
+    `ProductMetadata`'s own field validator, that is the one authoritative
+    place a malformed regex is rejected as bad input. The guard below is
+    only defense-in-depth for a caller that reaches this function directly
+    with a pattern that never passed through that model, it does not
+    duplicate that validation's role: a broken pattern is reported CORRUPTED
+    (the batch identity could not be judged, not that it is valid), never
+    silently treated as a match.
     """
     if raw is None or raw.strip() == "":
         return BatchAssessment(raw_value=raw, normalized_value=None, validity=BatchValidity.MISSING)
@@ -102,7 +111,19 @@ def classify_batch(raw: str | None, pattern: str | None = None) -> BatchAssessme
     stripped = raw.strip()
 
     if pattern is not None:
-        if re.fullmatch(pattern, stripped):
+        try:
+            matched = re.fullmatch(pattern, stripped)
+        except re.error as exc:
+            return BatchAssessment(
+                raw_value=raw,
+                normalized_value=stripped,
+                validity=BatchValidity.CORRUPTED,
+                transformation=(
+                    f"this SKU's configured batch_pattern is not a valid regular "
+                    f"expression ({exc}), the batch code could not be judged against it"
+                ),
+            )
+        if matched:
             return BatchAssessment(raw_value=raw, normalized_value=stripped, validity=BatchValidity.VALID)
         return BatchAssessment(
             raw_value=raw,
