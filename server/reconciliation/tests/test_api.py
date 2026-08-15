@@ -227,6 +227,46 @@ def test_delete_reconciliation(client, compound_failure_payload):
     assert get_response.status_code == 404
 
 
+def test_create_reconciliation_malformed_batch_pattern_returns_structured_422(client):
+    """HIGH-1 regression: a malformed custom batch_pattern must surface as the
+    application's normal structured validation response, never as a bare 500
+    internal_error, and never as a silent QUARANTINE. Deliberately does not
+    assert on Python's exact re.error wording, only on the shape of the
+    response and that it names the offending field.
+    """
+    payload = {
+        "return_id": "RET-BAD-PATTERN",
+        "warehouse_report": {
+            "items": [
+                {
+                    "item_id": "X1",
+                    "sku": "BAD-SKU",
+                    "quantity_received": 5,
+                    "condition": "GOOD",
+                    "damaged_quantity": 0,
+                    "batch_code": "AB1234",
+                }
+            ]
+        },
+        "supplier_events": [],
+        "product_metadata": [{"sku": "BAD-SKU", "batch_pattern": "(unclosed["}],
+    }
+    response = client.post(
+        f"{API}/reconciliations",
+        data=json.dumps(payload),
+        content_type="application/json",
+    )
+
+    assert response.status_code == 422
+    body = response.json()
+    assert body["error"] == "validation_error"
+    assert body["message"]
+    assert body["details"]
+    assert any("batch_pattern" in d["path"] for d in body["details"])
+    assert any(d["message"] for d in body["details"])
+    assert not ReconciliationRun.objects.exists()
+
+
 def test_openapi_docs_available(client):
     docs = client.get(f"{API}/docs")
     schema = client.get(f"{API}/openapi.json")
